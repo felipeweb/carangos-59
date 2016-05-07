@@ -6,7 +6,9 @@ import android.widget.Toast;
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.adapter.PublicacaoAdapter;
 import br.com.caelum.fj59.carangos.app.CarangosApplication;
+import br.com.caelum.fj59.carangos.infra.MyLog;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
+import br.com.caelum.fj59.carangos.navegacao.EstadoMainActivity;
 import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesDelegate;
 import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesTask;
 
@@ -14,22 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements BuscaMaisPublicacoesDelegate {
-	private ListView listView;
 	private List<Publicacao> publicacoes;
-	private PublicacaoAdapter adapter;
+	private EstadoMainActivity estado;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.publicacoes_list);
-
-		this.listView = (ListView) findViewById(R.id.publicacoes_list);
+		setContentView(R.layout.main);
 		this.publicacoes = new ArrayList<Publicacao>();
-		this.adapter = new PublicacaoAdapter(this, this.publicacoes);
-
-		this.listView.setAdapter(adapter);
-
-		new BuscaMaisPublicacoesTask(this).execute();
+		this.estado = EstadoMainActivity.INICIO;
+		this.estado.executa(this);
 	}
 
 	public List<Publicacao> getPublicacoes() {
@@ -37,10 +33,12 @@ public class MainActivity extends BaseActivity implements BuscaMaisPublicacoesDe
 	}
 
 	@Override
-	public void lidaComRetorno(List<Publicacao> retorno) {
+	public void lidaComRetorno(List<Publicacao> resultado) {
 		this.publicacoes.clear();
-		this.publicacoes.addAll(retorno);
-		this.adapter.notifyDataSetChanged();
+		this.publicacoes.addAll(resultado);
+		this.estado = EstadoMainActivity.PRIMEIRAS_PUBLICACOES_RECEBIDAS;
+		this.estado.executa(this);
+		MyLog.i(this.estado);
 	}
 
 	@Override
@@ -53,5 +51,17 @@ public class MainActivity extends BaseActivity implements BuscaMaisPublicacoesDe
 	@Override
 	public CarangosApplication getCarangosApplication() {
 		return (CarangosApplication) getApplication();
+	}
+
+	public void alteraEstadoEExecuta(EstadoMainActivity estado) {
+		MyLog.i(this.estado);
+		this.estado = estado;
+		this.estado.executa(this);
+		MyLog.i(this.estado);
+
+	}
+
+	public void buscaPublicacoes() {
+		new BuscaMaisPublicacoesTask(this).execute();
 	}
 }

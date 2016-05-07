@@ -11,20 +11,19 @@ import java.util.List;
 /**
  * Created by erich on 7/16/13.
  */
-public class BuscaMaisPublicacoesTask
-		extends AsyncTask<Pagina, Void, List<Publicacao>> {
+public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publicacao>> {
 	private BuscaMaisPublicacoesDelegate delegate;
 	private Exception erro;
 
 	public BuscaMaisPublicacoesTask(BuscaMaisPublicacoesDelegate delegate) {
 		this.delegate = delegate;
+		this.delegate.getCarangosApplication().registra(this);
 	}
 
 	@Override
 	protected List<Publicacao> doInBackground(Pagina... paginas) {
 		try {
-			Pagina paginaParaBuscar =
-					paginas.length > 1 ? paginas[0] : new Pagina();
+			Pagina paginaParaBuscar = paginas.length > 1 ? paginas[0] : new Pagina();
 			String jsonDeResposta = new WebClient("post/list?" + paginaParaBuscar).get();
 			List<Publicacao> publicacoesRecebidas = new PublicacaoConverter().converte(jsonDeResposta);
 			return publicacoesRecebidas;
@@ -41,5 +40,6 @@ public class BuscaMaisPublicacoesTask
 		} else {
 			this.delegate.lidaComErro(this.erro);
 		}
+		this.delegate.getCarangosApplication().desregistra(this);
 	}
 }

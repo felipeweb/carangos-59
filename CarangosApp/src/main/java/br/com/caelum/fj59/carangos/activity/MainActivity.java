@@ -1,11 +1,11 @@
 package br.com.caelum.fj59.carangos.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.adapter.PublicacaoAdapter;
+import br.com.caelum.fj59.carangos.app.CarangosApplication;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
 import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesDelegate;
 import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesTask;
@@ -13,7 +13,7 @@ import br.com.caelum.fj59.carangos.tasks.BuscaMaisPublicacoesTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends ActionBarActivity implements BuscaMaisPublicacoesDelegate {
+public class MainActivity extends BaseActivity implements BuscaMaisPublicacoesDelegate {
 	private ListView listView;
 	private List<Publicacao> publicacoes;
 	private PublicacaoAdapter adapter;
@@ -47,5 +47,11 @@ public class MainActivity extends ActionBarActivity implements BuscaMaisPublicac
 	public void lidaComErro(Exception e) {
 		e.printStackTrace();
 		Toast.makeText(this, "Erro ao buscar dados", Toast.LENGTH_LONG).show();
+	}
+
+
+	@Override
+	public CarangosApplication getCarangosApplication() {
+		return (CarangosApplication) getApplication();
 	}
 }

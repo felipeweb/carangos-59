@@ -8,12 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-
-import java.util.List;
-
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
+
+import java.util.List;
 
 /**
  * Created by erich on 7/16/13.

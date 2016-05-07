@@ -1,15 +1,14 @@
 package br.com.caelum.fj59.carangos.converter;
 
+import br.com.caelum.fj59.carangos.modelo.Humor;
+import br.com.caelum.fj59.carangos.modelo.Publicacao;
+import br.com.caelum.fj59.carangos.modelo.Usuario;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import br.com.caelum.fj59.carangos.modelo.Publicacao;
-import br.com.caelum.fj59.carangos.modelo.Humor;
-import br.com.caelum.fj59.carangos.modelo.Usuario;
 
 public class PublicacaoConverter {
 

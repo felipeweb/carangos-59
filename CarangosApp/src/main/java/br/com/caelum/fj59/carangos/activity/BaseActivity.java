@@ -1,7 +1,7 @@
 package br.com.caelum.fj59.carangos.activity;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import br.com.caelum.fj59.carangos.app.CarangosApplication;
 
 public class BaseActivity extends ActionBarActivity {

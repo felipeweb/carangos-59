@@ -1,15 +1,14 @@
 package br.com.caelum.fj59.carangos.webservice;
 
 
+import br.com.caelum.fj59.carangos.infra.MyLog;
+import br.com.caelum.fj59.carangos.infra.MyServer;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-
-import br.com.caelum.fj59.carangos.infra.MyLog;
-import br.com.caelum.fj59.carangos.infra.MyServer;
 
 
 public class WebClient {

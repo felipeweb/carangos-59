@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -56,7 +58,12 @@ public class PublicacaoAdapter extends BaseAdapter {
         mensagem.setText(publicacao.getMensagem());
         nomeAutor.setText(publicacao.getAutor().getNome());
 
-        foto.setImageDrawable(this.context.getResources().getDrawable(R.drawable.ic_car));
+
+        progress.setVisibility(View.VISIBLE);
+        Picasso.with(this.context) .load(publicacao.getFoto())
+                .fit()
+                .into(foto, new VerificadorDeRetorno(progress));
+
 
         int idImagem = 0;
         switch (publicacao.getEstadoDeHumor()) {
@@ -95,4 +102,21 @@ public class PublicacaoAdapter extends BaseAdapter {
             this.progress = (ProgressBar) view.findViewById(R.id.progress);
         }
     }
+
+	class VerificadorDeRetorno implements Callback {
+		private ProgressBar holder;
+
+		private VerificadorDeRetorno(ProgressBar holder) {
+			this.holder = holder;
+		}
+
+		@Override
+		public void onSuccess() {
+			holder.setVisibility(View.GONE);
+		}
+
+		@Override
+		public void onError() {
+		}
+	}
 }

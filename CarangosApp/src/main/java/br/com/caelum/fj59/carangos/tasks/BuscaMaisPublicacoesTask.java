@@ -1,23 +1,27 @@
 package br.com.caelum.fj59.carangos.tasks;
 
+import android.app.Application;
 import android.os.AsyncTask;
+import br.com.caelum.fj59.carangos.app.CarangosApplication;
 import br.com.caelum.fj59.carangos.converter.PublicacaoConverter;
+import br.com.caelum.fj59.carangos.evento.EventoPublicacoesRecebidas;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
 import br.com.caelum.fj59.carangos.webservice.Pagina;
 import br.com.caelum.fj59.carangos.webservice.WebClient;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by erich on 7/16/13.
  */
 public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publicacao>> {
-	private BuscaMaisPublicacoesDelegate delegate;
+	private CarangosApplication application;
 	private Exception erro;
 
-	public BuscaMaisPublicacoesTask(BuscaMaisPublicacoesDelegate delegate) {
-		this.delegate = delegate;
-		this.delegate.getCarangosApplication().registra(this);
+	public BuscaMaisPublicacoesTask(CarangosApplication application) {
+		this.application = application;
+		this.application.registra(this);
 	}
 
 	@Override
@@ -36,10 +40,10 @@ public class BuscaMaisPublicacoesTask extends AsyncTask<Pagina, Void, List<Publi
 	@Override
 	protected void onPostExecute(List<Publicacao> retorno) {
 		if (retorno != null) {
-			this.delegate.lidaComRetorno(retorno);
+			EventoPublicacoesRecebidas.notifica(application, (Serializable) retorno, true);
 		} else {
-			this.delegate.lidaComErro(this.erro);
+			EventoPublicacoesRecebidas.notifica(application, erro, false);
 		}
-		this.delegate.getCarangosApplication().desregistra(this);
+		this.application.desregistra(this);
 	}
 }

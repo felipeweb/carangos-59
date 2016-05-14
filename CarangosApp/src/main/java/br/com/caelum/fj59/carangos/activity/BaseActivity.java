@@ -13,8 +13,6 @@ public class BaseActivity extends ActionBarActivity {
 
 	@Override
 	protected void onDestroy() {
-		CarangosApplication application = (CarangosApplication) getApplication();
-		application.limpaTudo();
 		super.onDestroy();
 	}
 }

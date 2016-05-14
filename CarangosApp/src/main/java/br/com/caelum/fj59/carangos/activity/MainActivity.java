@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 import br.com.caelum.fj59.carangos.R;
 import br.com.caelum.fj59.carangos.app.CarangosApplication;
+import br.com.caelum.fj59.carangos.evento.EventoPublicacoesRecebidas;
 import br.com.caelum.fj59.carangos.infra.MyLog;
 import br.com.caelum.fj59.carangos.modelo.Publicacao;
 import br.com.caelum.fj59.carangos.navegacao.EstadoMainActivity;
@@ -15,18 +16,20 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements BuscaMaisPublicacoesDelegate {
 	private EstadoMainActivity estado;
 	private static final String ESTADO_ATUAL = "ESTADO_ATUAL";
+	private EventoPublicacoesRecebidas evento;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		this.estado = EstadoMainActivity.INICIO;
+		this.evento = EventoPublicacoesRecebidas.registraObservador(this);
 	}
 
 
 	@Override
 	public void lidaComRetorno(List<Publicacao> resultado) {
-		CarangosApplication application = (CarangosApplication) getApplication();
+		CarangosApplication application = getCarangosApplication();
 		List<Publicacao> publicacoes = application.getPublicacoes();
 		publicacoes.clear();
 		publicacoes.addAll(resultado);
@@ -56,7 +59,7 @@ public class MainActivity extends BaseActivity implements BuscaMaisPublicacoesDe
 	}
 
 	public void buscaPublicacoes() {
-		new BuscaMaisPublicacoesTask(this).execute();
+		new BuscaMaisPublicacoesTask(getCarangosApplication()).execute();
 	}
 
 	@Override
@@ -78,5 +81,11 @@ public class MainActivity extends BaseActivity implements BuscaMaisPublicacoesDe
 		super.onResume();
 		MyLog.i("EXECUTANDO ESTADO: " + this.estado);
 		this.estado.executa(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		this.evento.desregistra(getCarangosApplication());
 	}
 }
